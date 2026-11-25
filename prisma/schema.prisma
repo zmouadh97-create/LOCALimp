@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// role : USER | RESPONSABLE | ADMIN
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  password  String
+  role      String    @default("USER")
+  createdAt DateTime  @default(now())
+  reports   Report[]  @relation("author")
+  assigned  Report[]  @relation("assignee")
+  supports  Support[]
+  comments  Comment[]
+  history   History[]
+}
+
+// status : NOUVEAU | PRIS_EN_CHARGE | EN_COURS | RESOLU
+model Report {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  category    String
+  location    String
+  photo       String?
+  status      String    @default("NOUVEAU")
+  resolution  String?
+  createdAt   DateTime  @default(now())
+  resolvedAt  DateTime?
+  authorId    Int
+  author      User      @relation("author", fields: [authorId], references: [id])
+  assigneeId  Int?
+  assignee    User?     @relation("assignee", fields: [assigneeId], references: [id])
+  supports    Support[]
+  comments    Comment[]
+  history     History[]
+}
+
+// Clé primaire composée : un utilisateur ne peut soutenir qu'une fois un signalement
+model Support {
+  userId    Int
+  reportId  Int
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  @@id([userId, reportId])
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  authorId  Int
+  author    User     @relation(fields: [authorId], references: [id])
+  reportId  Int
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+}
+
+model History {
+  id        Int      @id @default(autoincrement())
+  action    String
+  createdAt DateTime @default(now())
+  authorId  Int
+  author    User     @relation(fields: [authorId], references: [id])
+  reportId  Int
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+}
