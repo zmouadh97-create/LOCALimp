@@ -8,10 +8,10 @@ Plateforme de signalement et de suivi des problèmes du quotidien sur un campus 
 
 ```bash
 npm install
-cp .env.example .env      # puis changer SESSION_SECRET
+cp .env.example .env
 npx prisma generate
-npm run db:setup          # crée la base SQLite et insère les données de démo
-npm run dev               # http://localhost:3000
+npm run db:setup
+npm run dev
 ```
 
 ### Configuration (`.env`)
