@@ -1,4 +1,3 @@
-// Carte de statistique : icône colorée, valeur et libellé
 export default function StatCard({ icon: Icon, value, label, color = 'blue', note }) {
   return (
     <div className="card stat">

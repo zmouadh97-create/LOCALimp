@@ -6,7 +6,7 @@ import { LOCATIONS } from '@/lib/constants';
 import PageTitle from '@/components/PageTitle';
 import StatusBadge from '@/components/StatusBadge';
 
-// Couleur d'un lieu : bleu s'il a un signalement nouveau, orange s'il y en a en traitement, vert sinon
+
 const colorOf = (reports) =>
   reports.some((r) => r.status === 'NOUVEAU') ? 'blue' : reports.some((r) => r.status !== 'RESOLU') ? 'orange' : 'green';
 

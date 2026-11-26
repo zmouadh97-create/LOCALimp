@@ -8,7 +8,6 @@ import { CATEGORIES, LOCATION_NAMES } from '@/lib/constants';
 export default function ReportForm() {
   const [similar, setSimilar] = useState([]);
 
-  // Fonctionnalité originale : détection de doublons quand on quitte le titre ou change le lieu
   async function check(e) {
     const form = e.target.form;
     setSimilar(await findSimilar(form.title.value, form.location.value));

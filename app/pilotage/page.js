@@ -10,7 +10,6 @@ const WEEK = 7 * 86400000;
 
 export default async function PilotagePage() {
   await requireUser('RESPONSABLE', 'ADMIN');
-  // Tableau de bord : toutes les valeurs sont calculées depuis les données enregistrées
   const [reports, users] = await Promise.all([
     prisma.report.findMany({ select: { status: true, category: true, createdAt: true, resolvedAt: true } }),
     prisma.user.count(),
@@ -18,7 +17,6 @@ export default async function PilotagePage() {
   const resolved = reports.filter((r) => r.status === 'RESOLU');
   const rate = reports.length ? Math.round((resolved.length / reports.length) * 100) : 0;
 
-  // Volume par semaine sur les 8 dernières semaines (créés / résolus)
   const now = Date.now();
   const weeks = Array.from({ length: 8 }, (_, i) => {
     const end = now - (7 - i) * WEEK, start = end - WEEK;

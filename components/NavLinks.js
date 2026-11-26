@@ -13,7 +13,6 @@ const LINKS = [
   { href: '/admin/users', label: 'Utilisateurs', icon: Users, roles: ['ADMIN'] },
 ];
 
-// Liens du menu filtrés selon le rôle (les pages sont aussi protégées côté serveur)
 export default function NavLinks({ role }) {
   const path = usePathname();
   return (

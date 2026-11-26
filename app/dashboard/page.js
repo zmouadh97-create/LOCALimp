@@ -11,7 +11,6 @@ import Bars from '@/components/Bars';
 export default async function OverviewPage() {
   await requireUser();
   const weekAgo = new Date(Date.now() - 7 * 86400000);
-  // Tous les chiffres sont calculés à partir de la base
   const [active, inProgress, resolved, resolvedWeek, supports, recent, byCategory] = await Promise.all([
     prisma.report.count({ where: { status: { not: 'RESOLU' } } }),
     prisma.report.count({ where: { status: { in: ['PRIS_EN_CHARGE', 'EN_COURS'] } } }),

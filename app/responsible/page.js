@@ -8,7 +8,6 @@ import ReportList from '@/components/ReportList';
 
 export default async function ResponsiblePage() {
   const user = await requireUser('RESPONSABLE', 'ADMIN');
-  // Le responsable voit ses signalements attribués ; l'administrateur voit tout
   const mine = user.role === 'RESPONSABLE' ? { assigneeId: user.id } : {};
   const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
 
@@ -20,7 +19,6 @@ export default async function ResponsiblePage() {
     prisma.report.findMany({ where: { ...mine, status: { not: 'RESOLU' } }, include: withSupports, orderBy: { createdAt: 'asc' } }),
     prisma.report.findMany({ where: { ...mine, status: 'RESOLU' }, select: { createdAt: true, resolvedAt: true } }),
   ]);
-  // Priorités : urgents d'abord, puis les plus anciens
   const priorities = [...active].sort((a, b) => isUrgent(b) - isUrgent(a));
 
   return (

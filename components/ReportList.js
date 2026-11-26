@@ -1,6 +1,5 @@
 import ReportRow from './ReportRow';
 
-// Panneau listant des signalements, avec un état vide
 export default function ReportList({ title, subtitle, action, reports, empty = 'Aucun signalement.' }) {
   return (
     <section className="card panel">

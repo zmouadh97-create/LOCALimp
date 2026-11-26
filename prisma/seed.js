@@ -1,4 +1,3 @@
-// Données de démonstration : npm run db:setup (ou node prisma/seed.js)
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
 const prisma = new PrismaClient();
@@ -15,7 +14,6 @@ async function main() {
   const resp = await prisma.user.create({ data: { name: 'Sami Trabelsi', email: 'responsable@localimpact.tn', password, role: 'RESPONSABLE' } });
   const user = await prisma.user.create({ data: { name: 'Leïla Mansour', email: 'utilisateur@localimpact.tn', password } });
 
-  // Crée un signalement en rejouant son parcours : chaque étape est inscrite dans l'historique
   const steps = ['PRIS_EN_CHARGE', 'EN_COURS', 'RESOLU'];
   const labels = { NOUVEAU: 'Nouveau', PRIS_EN_CHARGE: 'Pris en charge', EN_COURS: 'En cours', RESOLU: 'Résolu' };
   async function report({ status = 'NOUVEAU', age, supporters = [], resolution, ...data }) {

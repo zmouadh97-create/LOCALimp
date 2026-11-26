@@ -1,7 +1,6 @@
 'use client';
 import { useActionState } from 'react';
 
-// Formulaire réutilisable : gère l'état de chargement et les messages renvoyés par la Server Action
 export default function ActionForm({ action, submit, children, className = 'form' }) {
   const [state, formAction, pending] = useActionState(action, {});
   return (

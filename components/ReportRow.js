@@ -3,7 +3,6 @@ import { ChevronRight } from 'lucide-react';
 import StatusBadge from './StatusBadge';
 import { isUrgent } from '@/lib/constants';
 
-// Ligne d'un signalement (liste, vue d'ensemble, file d'intervention)
 export default function ReportRow({ report }) {
   return (
     <li>

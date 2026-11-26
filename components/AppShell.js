@@ -1,15 +1,15 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { Plus, LogOut } from 'lucide-react';
 import { requireUser } from '@/lib/auth';
 import { ROLES } from '@/lib/constants';
 import { logout } from '@/app/actions';
-import Logo from '@/components/Logo';
-import NavLinks from '@/components/NavLinks';
+import Logo from './Logo';
+import NavLinks from './NavLinks';
 
 const initials = (name) => name.split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase();
 
-// Mise en page de l'espace connecté : menu latéral + en-tête
-export default async function AppLayout({ children }) {
+export default async function AppShell({ children }) {
   const user = await requireUser();
   return (
     <div className="shell">
@@ -41,7 +41,9 @@ export default async function AppLayout({ children }) {
           </div>
           <Link href="/reports/new" className="button"><Plus size={20} aria-hidden /> Nouveau signalement</Link>
         </header>
-        <main id="main">{children}</main>
+        <main id="main">
+          <Suspense fallback={<p role="status" className="muted">Chargement…</p>}>{children}</Suspense>
+        </main>
       </div>
     </div>
   );

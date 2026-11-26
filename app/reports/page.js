@@ -17,7 +17,6 @@ export default async function ReportsPage({ searchParams }) {
       ...(status && { status }),
     },
     include: withSupports,
-    // Tri « Plus soutenus » : aide à prioriser
     orderBy: sort === 'priority' ? [{ supports: { _count: 'desc' } }, { createdAt: 'desc' }] : { createdAt: 'desc' },
   });
 

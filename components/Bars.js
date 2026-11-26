@@ -1,4 +1,3 @@
-// Répartition en barres horizontales ; data = [[libellé, nombre], ...]
 const COLORS = ['#f5a524', '#1463ff', '#12b981', '#8b5cf6', '#ef4444', '#06b6d4'];
 
 export default function Bars({ title, subtitle, data }) {

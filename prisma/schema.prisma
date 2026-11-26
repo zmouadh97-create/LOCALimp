@@ -7,7 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// role : USER | RESPONSABLE | ADMIN
 model User {
   id        Int       @id @default(autoincrement())
   name      String
@@ -22,7 +21,6 @@ model User {
   history   History[]
 }
 
-// status : NOUVEAU | PRIS_EN_CHARGE | EN_COURS | RESOLU
 model Report {
   id          Int       @id @default(autoincrement())
   title       String
@@ -43,7 +41,6 @@ model Report {
   history     History[]
 }
 
-// Clé primaire composée : un utilisateur ne peut soutenir qu'une fois un signalement
 model Support {
   userId    Int
   reportId  Int

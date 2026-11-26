@@ -55,9 +55,9 @@ Quand l'utilisateur remplit le titre ou le lieu d'un nouveau signalement, l'appl
 
 ```
 app/actions.js          Server Actions : toute la logique métier et les contrôles de rôle
-app/(auth)/             Connexion et inscription (écran partagé)
-app/(app)/layout.js     Menu latéral + en-tête de l'espace connecté
-app/(app)/...           dashboard, reports, map, my-reports, responsible, pilotage, admin/users
+app/login, app/register Connexion et inscription (layout → components/AuthShell.js)
+app/dashboard, reports, map, my-reports, responsible, pilotage, admin
+                        Pages connectées ; leur layout.js réutilise components/AppShell.js (menu + en-tête)
 components/             Composants réutilisables (ActionForm, ReportList, ReportRow, StatCard, Bars, StatusBadge, NavLinks…)
 lib/auth.js             Session et protection des pages (requireUser)
 lib/constants.js        Catégories, statuts, rôles et schémas de validation Zod
@@ -77,7 +77,4 @@ prisma/schema.prisma    Modèle de données
 - La carte est un plan schématique, sans vraies coordonnées GPS. Ajouter un lieu, c'est ajouter une entrée dans `LOCATIONS`.
 - La recherche SQLite (`contains`) ne distingue pas la casse uniquement pour les caractères ASCII.
 
-## Déclaration d'utilisation de l'IA
 
-- Maquettes de l'interface réalisées avec Figma Make (outil d'IA).
-- Une partie du code a été générée avec l'assistant IA Claude (Anthropic), puis relue et adaptée par l'équipe.

@@ -3,11 +3,7 @@ import { prisma } from '@/lib/db';
 import { avgDelay } from '@/lib/constants';
 import Logo from '@/components/Logo';
 
-// Rendu à chaque requête : les chiffres affichés restent à jour
-export const dynamic = 'force-dynamic';
-
-// Écran partagé connexion / inscription, avec des chiffres réels du campus
-export default async function AuthLayout({ children }) {
+export default async function AuthShell({ children }) {
   const [total, resolved] = await Promise.all([
     prisma.report.count(),
     prisma.report.findMany({ where: { status: 'RESOLU' }, select: { createdAt: true, resolvedAt: true } }),

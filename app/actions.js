@@ -8,14 +8,12 @@ import { registerSchema, loginSchema, reportSchema, commentSchema, NEXT_STATUS, 
 
 const firstError = (r) => ({ error: r.error.issues[0].message });
 
-/* ---------- Authentification ---------- */
-
 export async function register(_prev, formData) {
   const r = registerSchema.safeParse(Object.fromEntries(formData));
   if (!r.success) return firstError(r);
   if (await prisma.user.findUnique({ where: { email: r.data.email } })) return { error: 'Email déjà utilisé' };
   const user = await prisma.user.create({
-    data: { ...r.data, password: await bcrypt.hash(r.data.password, 10) }, // rôle USER par défaut
+    data: { ...r.data, password: await bcrypt.hash(r.data.password, 10) },
   });
   await createSession(user.id);
   redirect('/reports');
@@ -35,14 +33,11 @@ export async function logout() {
   redirect('/login');
 }
 
-/* ---------- Signalements ---------- */
-
 export async function createReport(_prev, formData) {
   const user = await requireUser();
   const r = reportSchema.safeParse(Object.fromEntries(formData));
   if (!r.success) return firstError(r);
 
-  // Photo facultative, stockée en base (data URL) pour rester simple
   let photo = null;
   const file = formData.get('photo');
   if (file && file.size > 0) {
@@ -57,7 +52,6 @@ export async function createReport(_prev, formData) {
   redirect(`/reports/${report.id}`);
 }
 
-// Fonctionnalité originale : détection de doublons pendant la saisie
 export async function findSimilar(title, location) {
   await requireUser();
   const words = title.toLowerCase().split(/\W+/).filter((w) => w.length > 3);
@@ -74,7 +68,6 @@ export async function findSimilar(title, location) {
 
 export async function supportReport(reportId) {
   const user = await requireUser();
-  // La clé primaire (userId, reportId) garantit un seul soutien par utilisateur
   await prisma.support.create({ data: { userId: user.id, reportId } }).catch(() => {});
   revalidatePath(`/reports/${reportId}`);
 }
@@ -105,7 +98,6 @@ export async function changeStatus(reportId, _prev, formData) {
   const report = await prisma.report.findUnique({ where: { id: reportId } });
   if (!report) return { error: 'Signalement introuvable' };
 
-  // Seul l'administrateur ou le responsable attribué peut changer le statut
   const allowed = user.role === 'ADMIN' || (user.role === 'RESPONSABLE' && report.assigneeId === user.id);
   if (!allowed) return { error: 'Action non autorisée' };
 
@@ -126,8 +118,6 @@ export async function changeStatus(reportId, _prev, formData) {
   revalidatePath(`/reports/${reportId}`);
   return { ok: 'Statut mis à jour' };
 }
-
-/* ---------- Administration ---------- */
 
 export async function updateRole(userId, _prev, formData) {
   const admin = await requireUser('ADMIN');
